@@ -8,18 +8,21 @@ class ExploreMap extends StatelessWidget {
   final MapController mapController;
   final LatLng userLocation;
   final List<TransitStop> nearbyStops;
+  final LatLng? droppedPin;
+  final void Function(LatLng)? onLongPress;
 
   const ExploreMap({
     super.key,
     required this.mapController,
     required this.userLocation,
     required this.nearbyStops,
+    this.droppedPin,
+    this.onLongPress,
   });
 
   @override
   Widget build(BuildContext context) {
     final c = context.c;
-    // Keep repo's working tile config
     const tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 
     return FlutterMap(
@@ -29,6 +32,7 @@ class ExploreMap extends StatelessWidget {
         initialZoom: 14.8,
         minZoom: 10,
         maxZoom: 18,
+        onLongPress: (tapPosition, point) => onLongPress?.call(point),
       ),
       children: [
         TileLayer(
@@ -85,6 +89,57 @@ class ExploreMap extends StatelessWidget {
                     ],
                   ),
                 )),
+
+            // Dropped Pin Marker
+            if (droppedPin != null)
+              Marker(
+                point: droppedPin!,
+                width: 140,
+                height: 58,
+                alignment: Alignment.topCenter,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: Sp.x2, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: c.card,
+                        borderRadius: BorderRadius.circular(Rad.sm),
+                        border: Border.all(color: c.separator, width: 0.5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: c.label.withValues(alpha: 0.20),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        'Dropped pin',
+                        style: MargText.caption.copyWith(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          color: c.red,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Icon(
+                      Icons.location_on_rounded,
+                      color: c.red,
+                      size: 28,
+                      shadows: [
+                        Shadow(
+                          color: c.label.withValues(alpha: 0.3),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
             // User Location marker (Apple Maps style soft halo dot)
             Marker(
               point: userLocation,
@@ -94,7 +149,6 @@ class ExploreMap extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    // Outer soft halo (radius 24)
                     Container(
                       width: 48,
                       height: 48,
@@ -103,7 +157,6 @@ class ExploreMap extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                     ),
-                    // Middle white ring (radius 9.5)
                     Container(
                       width: 19,
                       height: 19,
@@ -119,7 +172,6 @@ class ExploreMap extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // Inner solid blue dot (radius 6.8)
                     Container(
                       width: 13.6,
                       height: 13.6,

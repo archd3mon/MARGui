@@ -48,6 +48,16 @@ Append one block per phase. Evidence = commit, log, screenshot. Keep it factual.
 - Screenshot: proof/phase-2-home.png  (vs design-reference/screens/home.png), proof/phase-2-welcome.png (vs design-reference/screens/welcome.png)
 - Deviations from design + why: none; Android 48dp touch targets and predictive back preserved.
 
+### Phase 3 — Plan + Search  (2026-10-17)
+- Commit / tag: phase-3
+- Changed:
+  - Built token-perfect Plan screen matching `plan.png`: From/To card with dotted connector and swap, Leave row with departure time bottom sheet, Bus/Metro segmented control (Metro disabled with SOON badge), and animated priority chips.
+  - Built autocomplete search sheet with 400ms debounce, session caching, current location quick-action, and SharedPreferences recents persistence (max 5) across restarts.
+  - Implemented map long-press pin dropping reverse-labeled "Dropped pin" updating plan points, plus disabled "Show Routes" until points set with haptic on tap.
+- Verify: proof/phase-3.log  (analyze: clean | tests: 39 passed | 0 hardcoded colors)
+- Screenshot: proof/phase-3-plan.png  (vs design-reference/screens/plan.png)
+- Deviations from design + why: none; Android 48dp touch targets and predictive back preserved.
+
 ### Phase 8 — UI Design Implementation in Application  (2026-10-16)
 - Commit / tag: phase-8
 - Changed:

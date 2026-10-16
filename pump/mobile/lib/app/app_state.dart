@@ -92,6 +92,24 @@ class TripPlanNotifier extends Notifier<TripPlanState> {
 
 final tripPlanStateProvider = NotifierProvider<TripPlanNotifier, TripPlanState>(TripPlanNotifier.new);
 
+enum MapPickTarget { none, origin, destination }
+
+class MapPickTargetNotifier extends Notifier<MapPickTarget> {
+  @override
+  MapPickTarget build() => MapPickTarget.none;
+  void setTarget(MapPickTarget target) => state = target;
+}
+
+final mapPickTargetProvider = NotifierProvider<MapPickTargetNotifier, MapPickTarget>(MapPickTargetNotifier.new);
+
+class DroppedPinNotifier extends Notifier<Place?> {
+  @override
+  Place? build() => null;
+  void setPin(Place? pin) => state = pin;
+}
+
+final droppedPinProvider = NotifierProvider<DroppedPinNotifier, Place?>(DroppedPinNotifier.new);
+
 // Selected Route for details and live mode
 class SelectedRouteNotifier extends Notifier<TransitRoute?> {
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -135,9 +136,50 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     context.push('/plan');
   }
 
+  void _onMapLongPress(LatLng point) {
+    HapticFeedback.mediumImpact();
+    final droppedPlace = Place(
+      id: 'dropped_pin',
+      name: 'Dropped pin',
+      displayName: '${point.latitude.toStringAsFixed(4)}, ${point.longitude.toStringAsFixed(4)}',
+      lat: point.latitude,
+      lng: point.longitude,
+      type: 'pin',
+    );
+
+    ref.read(droppedPinProvider.notifier).setPin(droppedPlace);
+    final pickTarget = ref.read(mapPickTargetProvider);
+
+    if (pickTarget == MapPickTarget.origin) {
+      ref.read(tripPlanStateProvider.notifier).updatePlan((s) => s.copyWith(from: droppedPlace));
+      ref.read(mapPickTargetProvider.notifier).setTarget(MapPickTarget.none);
+      context.push('/plan');
+    } else {
+      ref.read(tripPlanStateProvider.notifier).updatePlan((s) => s.copyWith(to: droppedPlace));
+      ref.read(storageServiceProvider).addRecentSearch(droppedPlace);
+      if (pickTarget == MapPickTarget.destination) {
+        ref.read(mapPickTargetProvider.notifier).setTarget(MapPickTarget.none);
+        context.push('/plan');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Dropped pin placed'),
+            action: SnackBarAction(
+              label: 'Plan Trip',
+              onPressed: () => context.push('/plan'),
+            ),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final c = context.c;
+    final droppedPin = ref.watch(droppedPinProvider);
+    final pickTarget = ref.watch(mapPickTargetProvider);
+    final isPicking = pickTarget != MapPickTarget.none;
 
     return Scaffold(
       backgroundColor: c.bg,
@@ -148,6 +190,8 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             mapController: _mapController,
             userLocation: _userLocation,
             nearbyStops: _nearbyStops,
+            droppedPin: droppedPin != null ? LatLng(droppedPin.lat, droppedPin.lng) : null,
+            onLongPress: _onMapLongPress,
           ),
 
           // 2. Top-right floating glass buttons (Locate-me + Layers)
@@ -164,18 +208,54 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             ),
           ),
 
-          // 3. Draggable Scrollable Sheet (snaps: 0.14, 0.5, 0.92)
-          ExploreSheet(
-            onSearchTap: _onSearchTap,
-            onHomeTap: () => _onShortcutTap('home'),
-            onWorkTap: () => _onShortcutTap('work'),
-            onAddTap: () => context.push('/saved'),
-            stops: _nearbyStops,
-            isLoading: _isLoading,
-            errorMessage: _errorMessage,
-            onRetry: _loadNearbyStops,
-            onStopTap: _onStopTap,
-          ),
+          // 3. Picking Mode Banner (when active)
+          if (isPicking)
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(Sp.x4, Sp.x3, 110, 0),
+                child: Glass(
+                  radius: Rad.md,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: Sp.x3, vertical: Sp.x2),
+                    child: Row(
+                      children: [
+                        Icon(Icons.touch_app_rounded, color: c.blue, size: 18),
+                        const SizedBox(width: Sp.x2),
+                        Expanded(
+                          child: Text(
+                            'Long-press on map to drop pin',
+                            style: MargText.caption.copyWith(
+                              color: c.label,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            ref.read(mapPickTargetProvider.notifier).setTarget(MapPickTarget.none);
+                          },
+                          child: Icon(Icons.close_rounded, color: c.label3, size: 18),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+          // 4. Draggable Scrollable Sheet (snaps: 0.14, 0.5, 0.92)
+          if (!isPicking)
+            ExploreSheet(
+              onSearchTap: _onSearchTap,
+              onHomeTap: () => _onShortcutTap('home'),
+              onWorkTap: () => _onShortcutTap('work'),
+              onAddTap: () => context.push('/saved'),
+              stops: _nearbyStops,
+              isLoading: _isLoading,
+              errorMessage: _errorMessage,
+              onRetry: _loadNearbyStops,
+              onStopTap: _onStopTap,
+            ),
         ],
       ),
     );
