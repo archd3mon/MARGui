@@ -64,10 +64,8 @@ class _ResultsScreenState extends ConsumerState<ResultsScreen> {
   Widget build(BuildContext context) {
     final c = context.c;
     final tripPlan = ref.watch(tripPlanStateProvider);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final tileUrl = isDark
-        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
-        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+    const tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+
 
     // Polyline points for route visualization
     final routePoints = [

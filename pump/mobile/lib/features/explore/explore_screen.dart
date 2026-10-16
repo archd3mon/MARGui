@@ -63,10 +63,8 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     final c = context.c;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final tileUrl = isDark
-        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
-        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+    const tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+
 
     return Scaffold(
       backgroundColor: c.bg,

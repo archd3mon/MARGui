@@ -118,10 +118,12 @@ class _PlanScreenState extends ConsumerState<PlanScreen> {
         backgroundColor: c.bg,
         elevation: 0,
         centerTitle: true,
+        leadingWidth: 80,
         leading: TextButton(
           onPressed: () => context.pop(),
           child: Text(
             'Cancel',
+
             style: MargText.headline.copyWith(
               color: c.blue,
               fontWeight: FontWeight.w400,

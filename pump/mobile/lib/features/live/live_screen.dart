@@ -58,10 +58,8 @@ class _LiveScreenState extends ConsumerState<LiveScreen> {
     final c = context.c;
     final live = ref.watch(liveTripProvider);
     final tripPlan = ref.watch(tripPlanStateProvider);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final tileUrl = isDark
-        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
-        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+    const tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+
 
     // Route points and bus position
     final busPos = const LatLng(18.545, 73.87);

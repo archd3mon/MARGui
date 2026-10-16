@@ -88,10 +88,8 @@ class _ItineraryScreenState extends ConsumerState<ItineraryScreen> {
     final c = context.c;
     final tripPlan = ref.watch(tripPlanStateProvider);
     final route = ref.watch(selectedRouteProvider);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final tileUrl = isDark
-        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
-        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+    const tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+
 
     final routePoints = [
       LatLng(tripPlan.from.lat, tripPlan.from.lng),
