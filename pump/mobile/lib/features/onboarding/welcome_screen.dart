@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:geolocator/geolocator.dart';
 import '../../theme/marg_tokens.dart';
 import '../../shared/widgets/primary_button.dart';
 import '../../shared/widgets/tile_icon.dart';
@@ -27,8 +28,15 @@ class WelcomeScreen extends ConsumerWidget {
                 width: 88,
                 height: 88,
                 decoration: BoxDecoration(
-                  color: c.blue,
-                  borderRadius: BorderRadius.circular(Rad.sheet),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      c.tint(c.blue, 0.8),
+                      c.blue,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(22),
                   boxShadow: [
                     BoxShadow(
                       color: c.tint(c.blue, 0.4),
@@ -63,15 +71,15 @@ class WelcomeScreen extends ConsumerWidget {
               ),
               const SizedBox(height: Sp.x6),
               // Feature 1
-              _FeatureRow(
-                icon: Icons.alt_route,
+              const _FeatureRow(
+                icon: Icons.alt_route_rounded,
                 color: TileColor.blue,
                 title: 'Plan with confidence',
                 description: 'Ranked routes with arrival times, transfers and walking at a glance.',
               ),
               const SizedBox(height: Sp.x5),
               // Feature 2
-              _FeatureRow(
+              const _FeatureRow(
                 icon: Icons.access_time_rounded,
                 color: TileColor.green,
                 title: 'Know when it arrives',
@@ -79,8 +87,8 @@ class WelcomeScreen extends ConsumerWidget {
               ),
               const SizedBox(height: Sp.x5),
               // Feature 3
-              _FeatureRow(
-                icon: Icons.location_on_outlined,
+              const _FeatureRow(
+                icon: Icons.location_on_rounded,
                 color: TileColor.orange,
                 title: 'Made for Pune',
                 description: 'Covers the PMPML bus network. Metro joins in a future update.',
@@ -97,6 +105,13 @@ class WelcomeScreen extends ConsumerWidget {
               PrimaryButton(
                 label: 'Continue',
                 onPressed: () async {
+                  try {
+                    final permission = await Geolocator.checkPermission();
+                    if (permission == LocationPermission.denied) {
+                      await Geolocator.requestPermission();
+                    }
+                  } catch (_) {}
+
                   await ref.read(storageServiceProvider).setHasSeenOnboarding(true);
                   if (context.mounted) {
                     context.go('/explore');
@@ -131,7 +146,7 @@ class _FeatureRow extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TileIcon(icon: icon, color: color, size: 44, iconSize: 22),
+        TileIcon(icon: icon, color: color, size: 44, iconSize: 22, solid: true, radius: 12),
         const SizedBox(width: Sp.x4),
         Expanded(
           child: Column(

@@ -1,4 +1,6 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../theme/marg_tokens.dart';
 
 enum MargTab {
@@ -19,40 +21,57 @@ class GlassTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: Padding(
-        padding: const EdgeInsets.only(left: Sp.x4, right: Sp.x4, bottom: Sp.x2),
-        child: Glass(
-          radius: Rad.lg,
-          child: Container(
-            height: 60,
-            padding: const EdgeInsets.symmetric(horizontal: Sp.x2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _TabItem(
-                  icon: Icons.explore_outlined,
-                  activeIcon: Icons.explore,
-                  label: 'Explore',
-                  isSelected: currentTab == MargTab.explore,
-                  onTap: () => onTabSelected(MargTab.explore),
-                ),
-                _TabItem(
-                  icon: Icons.bookmark_border_rounded,
-                  activeIcon: Icons.bookmark_rounded,
-                  label: 'Saved',
-                  isSelected: currentTab == MargTab.saved,
-                  onTap: () => onTabSelected(MargTab.saved),
-                ),
-                _TabItem(
-                  icon: Icons.notifications_none_rounded,
-                  activeIcon: Icons.notifications_rounded,
-                  label: 'Alerts',
-                  isSelected: currentTab == MargTab.alerts,
-                  onTap: () => onTabSelected(MargTab.alerts),
-                ),
-              ],
+    final c = context.c;
+
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+        child: Container(
+          decoration: BoxDecoration(
+            color: c.glass,
+            border: Border(
+              top: BorderSide(color: c.separator, width: 0.5),
+            ),
+          ),
+          child: SafeArea(
+            top: false,
+            child: SizedBox(
+              height: 54,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _TabItem(
+                    icon: Icons.map_outlined,
+                    activeIcon: Icons.map_rounded,
+                    label: 'Explore',
+                    isSelected: currentTab == MargTab.explore,
+                    onTap: () {
+                      HapticFeedback.selectionClick();
+                      onTabSelected(MargTab.explore);
+                    },
+                  ),
+                  _TabItem(
+                    icon: Icons.bookmark_border_rounded,
+                    activeIcon: Icons.bookmark_rounded,
+                    label: 'Saved',
+                    isSelected: currentTab == MargTab.saved,
+                    onTap: () {
+                      HapticFeedback.selectionClick();
+                      onTabSelected(MargTab.saved);
+                    },
+                  ),
+                  _TabItem(
+                    icon: Icons.notifications_none_rounded,
+                    activeIcon: Icons.notifications_rounded,
+                    label: 'Alerts',
+                    isSelected: currentTab == MargTab.alerts,
+                    onTap: () {
+                      HapticFeedback.selectionClick();
+                      onTabSelected(MargTab.alerts);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -79,33 +98,39 @@ class _TabItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.c;
-    final color = isSelected ? c.blue : c.label2;
+    final color = isSelected ? c.blue : c.gray;
 
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(Rad.md),
-      child: Container(
-        constraints: const BoxConstraints(minWidth: Layout.touch, minHeight: Layout.touch),
-        padding: const EdgeInsets.symmetric(horizontal: Sp.x3, vertical: Sp.x1),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              isSelected ? activeIcon : icon,
-              color: color,
-              size: 22,
+    return Expanded(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          child: Container(
+            constraints: const BoxConstraints(minHeight: Layout.touch),
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  isSelected ? activeIcon : icon,
+                  color: color,
+                  size: 24,
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  label,
+                  style: MargText.caption.copyWith(
+                    color: color,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                    fontSize: 10,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 2),
-            Text(
-              label,
-              style: MargText.caption.copyWith(
-                color: color,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                fontSize: 11,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

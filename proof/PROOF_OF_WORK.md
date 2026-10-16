@@ -38,6 +38,16 @@ Append one block per phase. Evidence = commit, log, screenshot. Keep it factual.
 - Screenshot: proof/phase-1-foundation.png  (vs design-reference/screens/welcome.png)
 - Deviations from design + why: none
 
+### Phase 2 — Shell + Explore  (2026-10-17)
+- Commit / tag: edfaef0 / phase-2
+- Changed:
+  - Built onboarding flow with 3 value props, location rationale, lazy location permission request via Geolocator, and SharedPreferences single-show persistence.
+  - Built full-bleed FlutterMap with working tile config, user location dot with soft halo, stop markers with labels, unified top-right glass action buttons (locate-me + layers), and full-bleed glass tab bar with 48dp targets.
+  - Built modular Explore DraggableScrollableSheet (snaps 0.14/0.5/0.92) with "Where to?" field, 52dp circular shortcuts (Home/Work/Add), and nearby stops list with haversine distance, line chips, ETAs, and skeleton/empty/error states.
+- Verify: proof/phase-2.log  (analyze: clean | tests: 31 passed | 0 hardcoded colors)
+- Screenshot: proof/phase-2-home.png  (vs design-reference/screens/home.png), proof/phase-2-welcome.png (vs design-reference/screens/welcome.png)
+- Deviations from design + why: none; Android 48dp touch targets and predictive back preserved.
+
 ### Phase 8 — UI Design Implementation in Application  (2026-10-16)
 - Commit / tag: phase-8
 - Changed:
