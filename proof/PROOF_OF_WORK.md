@@ -25,6 +25,7 @@ Append one block per phase. Evidence = commit, log, screenshot. Keep it factual.
   - Implemented tokens, glass effects, shared chips, segmented control, routing with go_router, state management with Riverpod.
   - Connected transit repository, search, geocoding, route ranking, SharedPreferences persistence.
 - Verify: proof/phase-8.log (analyze: clean | tests: 8 passed | 0 hardcoded colors)
-- Screenshot: design-reference/screens/00_overview.png
+- Screenshots: proof/welcome_running.png, proof/explore_running.png (vs design-reference/screens/00_overview.png)
+- Running App: Active at http://localhost:3000/
 - Deviations from design + why: none; Android 48dp touch targets and predictive back applied.
 
