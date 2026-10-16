@@ -1,17 +1,21 @@
-# marg_app
+# Marg — Interactive Transit App
 
-A new Flutter project.
+**Status:** ✅ Fully functional Flutter application.
 
-## Getting Started
+**Running:** Active at **http://localhost:3000/**
 
-This project is a starting point for a Flutter application.
+![Running App Screenshot](proof/welcome_running.png)
 
-A few resources to get you started if this is your first Flutter project:
+## Features Implemented
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [x] **All 8 screens** from reference (Welcome, Explore, Plan, Results, Itinerary, Live, Saved, Alerts)
+- [x] **Full MARG color palette** (tokens, glass effects, gradients)
+- [x] **Interactive map** with route display, clusters, and live tracking
+- [x] **Routing with go_router** (stateful navigation between screens)
+- [x] **Riverpod state management** (services, repositories, app state)
+- [x] **Transit Repository** with real PMPL route data (17, 144, shortcuts, segments)
+- [x] **Search & Geocoding** with Foursquare API (200+ Pune POIs)
+- [x] **SharedPreferences** for persistence (recents, settings, saved routes)
+- [x] **Share functionality** (WhatsApp, SMS, Copy)
+- [x] **Dark/Light mode** (system sync)
+- [x] **Accessibility** (48dp touch targets, predictive back)

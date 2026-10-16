@@ -18,6 +18,16 @@ Append one block per phase. Evidence = commit, log, screenshot. Keep it factual.
 - Verify: rendered headlessly with Chromium at 1900 px; all 8 screens visually inspected.
 - Deviations: iPhone frames used for the Apple look in the assignment; Flutter build uses Android insets and 48 dp targets.
 
+### Phase 0 — Recon & scaffold  (2026-10-16)
+- Commit / tag: phase-0
+- Changed:
+  - Verified Flutter Android toolchain and booted Android emulator (API 37).
+  - Scaffolded Flutter project with Riverpod, GoRouter, Dio, FlutterMap, Geolocator, Inter fonts.
+  - Configured minSdk 26, edge-to-edge, predictive back, location permissions, and Marg tokens.
+- Verify: proof/phase-0.log  (analyze: clean | tests: 8 passed)
+- Screenshot: proof/phase-0-scaffold.png  (vs design-reference/screens/welcome.png)
+- Deviations from design + why: none
+
 ### Phase 8 — UI Design Implementation in Application  (2026-10-16)
 - Commit / tag: phase-8
 - Changed:
