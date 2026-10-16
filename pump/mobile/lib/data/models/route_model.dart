@@ -10,14 +10,15 @@ class TransitNode {
   });
 
   factory TransitNode.fromJson(Map<String, dynamic> json) {
+    final rawLat = json['lat'];
+    final rawLon = json['lon'] ?? json['lng'];
     return TransitNode(
       name: json['name']?.toString() ?? '',
-      lat: (json['lat'] is num) ? (json['lat'] as num).toDouble() : double.tryParse(json['lat']?.toString() ?? '0') ?? 0.0,
-      lon: (json['lon'] ?? json['lng'] is num)
-          ? ((json['lon'] ?? json['lng']) as num).toDouble()
-          : double.tryParse((json['lon'] ?? json['lng'])?.toString() ?? '0') ?? 0.0,
+      lat: (rawLat is num) ? rawLat.toDouble() : double.tryParse(rawLat?.toString() ?? '0') ?? 0.0,
+      lon: (rawLon is num) ? rawLon.toDouble() : double.tryParse(rawLon?.toString() ?? '0') ?? 0.0,
     );
   }
+
 
   Map<String, dynamic> toJson() => {'name': name, 'lat': lat, 'lon': lon};
 }
@@ -141,3 +142,8 @@ class TransitRoute {
     'next_bus_mins': nextBusMins,
   };
 }
+
+typedef Route = TransitRoute;
+typedef Leg = RouteLeg;
+typedef Node = TransitNode;
+

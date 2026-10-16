@@ -28,6 +28,16 @@ Append one block per phase. Evidence = commit, log, screenshot. Keep it factual.
 - Screenshot: proof/phase-0-scaffold.png  (vs design-reference/screens/welcome.png)
 - Deviations from design + why: none
 
+### Phase 1 — Foundation  (2026-10-16)
+- Commit / tag: phase-1
+- Changed:
+  - Saved 4 endpoint JSON fixtures in `test/fixtures/` and verified tolerant parsing with `FakeTransitRepository`.
+  - Built typed API client with timeout/retry/errors (`Offline`, `Unavailable503`, `Timeout`) and Riverpod providers.
+  - Implemented 9 token-based shared widgets with passing light & dark golden tests (31 tests total).
+- Verify: proof/phase-1.log  (analyze: clean | tests: 31 passed)
+- Screenshot: proof/phase-1-foundation.png  (vs design-reference/screens/welcome.png)
+- Deviations from design + why: none
+
 ### Phase 8 — UI Design Implementation in Application  (2026-10-16)
 - Commit / tag: phase-8
 - Changed:

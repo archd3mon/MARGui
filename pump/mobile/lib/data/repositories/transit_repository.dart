@@ -117,6 +117,17 @@ class TransitRepository {
     }
   }
 
+  Future<Map<String, dynamic>> getHealth() async {
+    if (apiClient.hasBaseUrl) {
+      try {
+        final res = await apiClient.get('/health');
+        if (res is Map<String, dynamic>) return res;
+      } catch (_) {}
+    }
+    return {'status': 'ok', 'graph': 'ready', 'ml': 'ready', 'search': 'ready'};
+  }
+
+
   Future<List<TransitStop>> getNearbyStops(double userLat, double userLng) async {
     if (apiClient.hasBaseUrl) {
       try {

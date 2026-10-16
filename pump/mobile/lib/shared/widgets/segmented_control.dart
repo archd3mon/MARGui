@@ -106,3 +106,6 @@ class MargSegmentedControl<T> extends StatelessWidget {
     );
   }
 }
+
+typedef Segmented<T> = MargSegmentedControl<T>;
+

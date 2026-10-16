@@ -24,6 +24,11 @@ class ApiTimeoutException implements Exception {
   String toString() => 'ApiTimeoutException: $message';
 }
 
+typedef Offline = ApiOfflineException;
+typedef Unavailable503 = ApiUnavailableException;
+typedef Timeout = ApiTimeoutException;
+
+
 class ApiClient {
   final Dio _dio;
   final String baseUrl;

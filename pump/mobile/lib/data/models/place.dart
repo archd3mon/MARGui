@@ -16,17 +16,18 @@ class Place {
   });
 
   factory Place.fromJson(Map<String, dynamic> json) {
+    final rawLat = json['lat'];
+    final rawLng = json['lng'] ?? json['lon'];
     return Place(
       id: json['id']?.toString() ?? '',
       name: json['name']?.toString() ?? '',
       displayName: json['display_name']?.toString() ?? json['name']?.toString() ?? '',
-      lat: (json['lat'] is num) ? (json['lat'] as num).toDouble() : double.tryParse(json['lat']?.toString() ?? '0') ?? 0.0,
-      lng: (json['lng'] ?? json['lon'] is num)
-          ? ((json['lng'] ?? json['lon']) as num).toDouble()
-          : double.tryParse((json['lng'] ?? json['lon'])?.toString() ?? '0') ?? 0.0,
+      lat: (rawLat is num) ? rawLat.toDouble() : double.tryParse(rawLat?.toString() ?? '0') ?? 0.0,
+      lng: (rawLng is num) ? rawLng.toDouble() : double.tryParse(rawLng?.toString() ?? '0') ?? 0.0,
       type: json['type']?.toString() ?? 'poi',
     );
   }
+
 
   Map<String, dynamic> toJson() => {
     'id': id,
