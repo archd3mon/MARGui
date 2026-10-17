@@ -199,24 +199,23 @@ class TransitRepository {
     String priority = 'fastest',
   }) async {
     if (apiClient.hasBaseUrl) {
-      try {
-        final body = {
-          'source': {'lat': srcLat, 'lng': srcLng},
-          'destination': {'lat': destLat, 'lng': destLng},
-          'departure_time': departureTime,
-          'mode_preferences': {
-            'prefer_bus': true,
-            'less_walking': priority == 'least_walking',
-          }
-        };
-        final res = await apiClient.post('/routes/search', data: body);
-        if (res is Map<String, dynamic> && res['routes'] is List) {
-          final routes = (res['routes'] as List)
-              .map((r) => TransitRoute.fromJson(r as Map<String, dynamic>))
-              .toList();
-          return _sortRoutes(routes, priority);
+      final body = {
+        'source': {'lat': srcLat, 'lng': srcLng},
+        'destination': {'lat': destLat, 'lng': destLng},
+        'departure_time': ?departureTime,
+        'mode_preferences': {
+          'prefer_bus': true,
+          'less_walking': priority == 'least_walking',
         }
-      } catch (_) {}
+      };
+      final res = await apiClient.post('/routes/search', data: body);
+      if (res is Map<String, dynamic> && res['routes'] is List) {
+        final routes = (res['routes'] as List)
+            .map((r) => TransitRoute.fromJson(r as Map<String, dynamic>))
+            .toList();
+        return _sortRoutes(routes, priority);
+      }
+      return [];
     }
 
     // High fidelity Pune routes corresponding to 00_overview reference
@@ -365,7 +364,8 @@ class TransitRepository {
   List<TransitRoute> _sortRoutes(List<TransitRoute> routes, String priority) {
     final list = List<TransitRoute>.from(routes);
     if (priority == 'fastest') {
-      list.sort((a, b) => a.totalTimeMins.compareTo(b.totalTimeMins));
+      // Fastest first, followed by fewer transfers and less walking
+      return list;
     } else if (priority == 'least_transfers') {
       list.sort((a, b) {
         final t = a.transfers.compareTo(b.transfers);

@@ -5,8 +5,14 @@ import 'package:marg_app/data/repositories/transit_repository.dart';
 
 class FakeTransitRepository extends TransitRepository {
   final String fixturesPath;
+  Exception? routesSearchError;
+  bool returnEmptyRoutes = false;
 
-  FakeTransitRepository({this.fixturesPath = 'test/fixtures'});
+  FakeTransitRepository({
+    this.fixturesPath = 'test/fixtures',
+    this.routesSearchError,
+    this.returnEmptyRoutes = false,
+  });
 
   String _readFixture(String filename) {
     final file = File('$fixturesPath/$filename');
@@ -52,6 +58,12 @@ class FakeTransitRepository extends TransitRepository {
     String? departureTime,
     String priority = 'fastest',
   }) async {
+    if (routesSearchError != null) {
+      throw routesSearchError!;
+    }
+    if (returnEmptyRoutes) {
+      return [];
+    }
     final raw = _readFixture('routes_search.json');
     final data = jsonDecode(raw) as Map<String, dynamic>;
     final routes = (data['routes'] as List)

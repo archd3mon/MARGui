@@ -58,6 +58,16 @@ Append one block per phase. Evidence = commit, log, screenshot. Keep it factual.
 - Screenshot: proof/phase-3-plan.png  (vs design-reference/screens/plan.png)
 - Deviations from design + why: none; Android 48dp touch targets and predictive back preserved.
 
+### Phase 4 — Results  (2026-10-17)
+- Commit / tag: phase-4
+- Changed:
+  - Built modular Results screen (<150 lines per widget) matching `results.png` with floating top bar and draggable glass sheet.
+  - Implemented skeleton loading shimmer cards and resilient handling for cold-start (503/timeout), offline, and empty states.
+  - Implemented token-styled route cards per API contract (selected card gets 2px blue ring + soft blue shadow), instant selection with haptics, and FlutterMap route polyline (white casing + blue stroke, walk = dotted grey, origin/transfer/destination bullseye markers) with 250ms cross-fade and animated fit-to-bounds.
+- Verify: proof/phase-4.log  (analyze: clean | tests: 48 passed | 0 hardcoded colors)
+- Screenshot: proof/phase-4-results.png  (vs design-reference/screens/results.png)
+- Deviations from design + why: none; Android 48dp touch targets and predictive back preserved.
+
 ### Phase 8 — UI Design Implementation in Application  (2026-10-16)
 - Commit / tag: phase-8
 - Changed:
