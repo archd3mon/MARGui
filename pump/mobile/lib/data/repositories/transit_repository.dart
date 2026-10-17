@@ -380,7 +380,13 @@ class TransitRepository {
     return list;
   }
 
-  List<TransitAlert> getAlerts({bool myRoutesOnly = true}) {
+  List<TransitAlert> getAlerts({
+    bool myRoutesOnly = true,
+    bool showDemoAlerts = false,
+    bool notifyLeaveNow = true,
+    bool notifyDelays = true,
+    bool notifyServiceChanges = true,
+  }) {
     const all = [
       TransitAlert(
         id: 'a1',
@@ -390,6 +396,7 @@ class TransitRepository {
         type: 'delay',
         routeLine: '144',
         isSavedRoute: true,
+        isSample: true,
       ),
       TransitAlert(
         id: 'a2',
@@ -399,6 +406,7 @@ class TransitRepository {
         type: 'diversion',
         routeLine: '17',
         isSavedRoute: true,
+        isSample: true,
       ),
       TransitAlert(
         id: 'a3',
@@ -408,21 +416,27 @@ class TransitRepository {
         type: 'commute',
         routeLine: null,
         isSavedRoute: true,
+        isSample: false,
       ),
       TransitAlert(
         id: 'a4',
         title: 'Route 118 · Maintenance',
         timeAgo: '2 h ago',
         body: 'Minor fleet adjustments on Swargate - Pune Station corridor.',
-        type: 'delay',
+        type: 'maintenance',
         routeLine: '118',
         isSavedRoute: false,
+        isSample: true,
       ),
     ];
 
-    if (myRoutesOnly) {
-      return all.where((a) => a.isSavedRoute).toList();
-    }
-    return all;
+    return all.where((a) {
+      if (a.isSample && !showDemoAlerts) return false;
+      if (myRoutesOnly && !a.isSavedRoute) return false;
+      if (a.type == 'commute' && !notifyLeaveNow) return false;
+      if (a.type == 'delay' && !notifyDelays) return false;
+      if (a.type == 'maintenance' && !notifyServiceChanges) return false;
+      return true;
+    }).toList();
   }
 }

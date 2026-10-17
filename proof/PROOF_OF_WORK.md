@@ -100,3 +100,14 @@ Append one block per phase. Evidence = commit, log, screenshot. Keep it factual.
 - Screenshots: proof/app-icons-verified.png, proof/dark-explore-icons-verified.png, proof/saved-icons-verified.png, proof/dark-saved-icons-verified.png, proof/plan-icons-verified.png, proof/results-icons-verified.png, proof/itinerary-icons-verified.png, proof/live-icons-verified.png
 - Deviations from design + why: none; perfectly restores all vector iconography across all app screens in both light and dark modes.
 
+### Phase 7 — Saved + Alerts  (2026-10-17)
+- Commit / tag: phase-7
+- Changed:
+  - Built modular Saved screen matching `saved.png` with Home & Work place cards (editable via `EditPlaceSheet` with Pune neighborhoods), uppercase "ROUTES" section header, swipe-to-delete dismissible routes with persistence, and tap-to-re-run search.
+  - Built modular Alerts screen matching `alerts.png` with My Routes / All Service segmented control, uppercase "NOTIFY ME" section header, notification switches (delays, reminders, service changes) persisting via SharedPreferences across restarts.
+  - Implemented honest `kDemoAlerts` flag defaulting to false and forced false in release builds, clearly labelling sample notices with a "Sample" badge when enabled.
+- Verify: proof/phase-7.log  (analyze: clean | tests: 69 passed | 0 hardcoded colors)
+- Screenshot: proof/phase-7-saved.png (vs design-reference/screens/saved.png), proof/phase-7-alerts.png (vs design-reference/screens/alerts.png)
+- Deviations from design + why: none; Android 48dp touch targets and predictive back preserved.
+
+

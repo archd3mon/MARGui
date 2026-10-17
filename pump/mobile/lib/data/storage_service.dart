@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'models/saved_item.dart';
 import 'models/place.dart';
@@ -11,6 +12,7 @@ class StorageService {
   static const _kNotifyDelaysKey = 'notify_delays';
   static const _kNotifyLeaveNowKey = 'notify_leave_now';
   static const _kNotifyServiceChangesKey = 'notify_service_changes';
+  static const _kDemoAlertsKey = 'demo_alerts_enabled';
 
   final SharedPreferences _prefs;
 
@@ -33,6 +35,18 @@ class StorageService {
 
   bool get notifyServiceChanges => _prefs.getBool(_kNotifyServiceChangesKey) ?? false;
   Future<void> setNotifyServiceChanges(bool val) => _prefs.setBool(_kNotifyServiceChangesKey, val);
+
+  // kDemoAlerts toggle - default false; forced false in release mode
+  bool get demoAlertsEnabled {
+    if (kReleaseMode) return false;
+    const compileTimeDefault = bool.fromEnvironment('DEMO_ALERTS', defaultValue: false);
+    return _prefs.getBool(_kDemoAlertsKey) ?? compileTimeDefault;
+  }
+
+  Future<void> setDemoAlertsEnabled(bool val) async {
+    if (kReleaseMode) return;
+    await _prefs.setBool(_kDemoAlertsKey, val);
+  }
 
   // Saved Places
   List<SavedPlace> getSavedPlaces() {
