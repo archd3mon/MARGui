@@ -89,3 +89,14 @@ Append one block per phase. Evidence = commit, log, screenshot. Keep it factual.
 - Running App: Active at http://localhost:3000/
 - Deviations from design + why: none; Android 48dp touch targets and predictive back applied.
 
+### Icon Rendering & Font Fix (Android TrueType) (2026-10-17)
+- Commit / tag: phase-icon-fix
+- Root cause: Flutter 3.24+ bundles OpenType CFF font (`MaterialIcons-Regular.otf`) with non-standard table formatting and unaligned table lengths. On modern Android graphics pipelines (Android 15+ / API 37), font sanitization rejects the OTF CFF font, causing all glyphs to fall back to system `.notdef` crossed placeholder boxes `[X]`.
+- Fix:
+  - Generated and bundled standard TrueType `MaterialIcons-Regular.ttf` in `pump/mobile/assets/fonts/` mapped to all Flutter Unicode codepoints across classic, rounded, and outlined variants.
+  - Registered `family: MaterialIcons` in `pump/mobile/pubspec.yaml` with `uses-material-design: false` so the clean TrueType font is the authoritative font provider on Android.
+  - Added root `analysis_options.yaml` to exclude `design/**` and `pump/backend/**` from IDE Dart analysis.
+- Verify: proof/phase-icon-fix.log (analyze: clean | tests: 61 passed | 0 hardcoded colors)
+- Screenshots: proof/app-icons-verified.png, proof/dark-explore-icons-verified.png, proof/saved-icons-verified.png, proof/dark-saved-icons-verified.png, proof/plan-icons-verified.png, proof/results-icons-verified.png, proof/itinerary-icons-verified.png, proof/live-icons-verified.png
+- Deviations from design + why: none; perfectly restores all vector iconography across all app screens in both light and dark modes.
+
