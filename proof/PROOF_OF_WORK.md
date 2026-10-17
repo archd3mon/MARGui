@@ -68,6 +68,16 @@ Append one block per phase. Evidence = commit, log, screenshot. Keep it factual.
 - Screenshot: proof/phase-4-results.png  (vs design-reference/screens/results.png)
 - Deviations from design + why: none; Android 48dp touch targets and predictive back preserved.
 
+### Phase 5 — Itinerary  (2026-10-17)
+- Commit / tag: fda7e93 / phase-5
+- Changed:
+  - Built modular Itinerary screen (<150 lines per widget) matching `itinerary.png` with floating top bar (circular glass back and share buttons) and draggable glass sheet.
+  - Implemented custom timeline rail: 3-column layout (time, rail, body), dotted grey rail for walk legs, solid blue 5px rail for bus legs, and white-filled ring nodes with red destination node.
+  - Implemented expandable intermediate stops with smooth height animation, Share trip text summary via `share_plus`, route bookmark saving persistence, and Start Trip navigation to live mode.
+- Verify: proof/phase-5.log  (analyze: clean | tests: 54 passed | 0 hardcoded colors)
+- Screenshot: proof/phase-5-itinerary.png  (vs design-reference/screens/itinerary.png)
+- Deviations from design + why: none; Android 48dp touch targets and predictive back preserved.
+
 ### Phase 8 — UI Design Implementation in Application  (2026-10-16)
 - Commit / tag: phase-8
 - Changed:
