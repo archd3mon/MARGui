@@ -18,7 +18,38 @@ abstract final class ResultsMapData {
     ];
   }
 
-  static List<Polyline> buildPolylines(TransitRoute route, double opacity, MargColors c, Place from, Place to) {
+  static List<LatLng> trimPoints(List<LatLng> points, double progress) {
+    if (progress >= 1.0) return points;
+    if (points.isEmpty || progress <= 0.0) return const [];
+    if (points.length == 1) return points;
+    final totalSegments = points.length - 1;
+    final targetPos = progress * totalSegments;
+    final index = targetPos.floor();
+    final frac = targetPos - index;
+
+    final result = <LatLng>[];
+    for (int i = 0; i <= index && i < points.length; i++) {
+      result.add(points[i]);
+    }
+    if (index < totalSegments && frac > 0.001) {
+      final p1 = points[index];
+      final p2 = points[index + 1];
+      result.add(LatLng(
+        p1.latitude + (p2.latitude - p1.latitude) * frac,
+        p1.longitude + (p2.longitude - p1.longitude) * frac,
+      ));
+    }
+    return result;
+  }
+
+  static List<Polyline> buildPolylines(
+    TransitRoute route,
+    double opacity,
+    MargColors c,
+    Place from,
+    Place to, {
+    double drawProgress = 1.0,
+  }) {
     final walkPts = [LatLng(from.lat, from.lng), const LatLng(18.5098, 73.8180)];
     final busPts = route.routeId == 'r_transfers'
         ? const [
@@ -31,11 +62,42 @@ abstract final class ResultsMapData {
           ];
     final endWalkPts = [const LatLng(18.5670, 73.9130), LatLng(to.lat, to.lng)];
 
-    return [
-      Polyline(points: walkPts, strokeWidth: 4, color: c.gray.withValues(alpha: opacity), pattern: const StrokePattern.dotted(spacingFactor: 1.5)),
-      Polyline(points: busPts, strokeWidth: 8, color: c.card.withValues(alpha: opacity)),
-      Polyline(points: busPts, strokeWidth: 5, color: c.blue.withValues(alpha: opacity)),
-      Polyline(points: endWalkPts, strokeWidth: 4, color: c.gray.withValues(alpha: opacity), pattern: const StrokePattern.dotted(spacingFactor: 1.5)),
-    ];
+    final trimmedWalk = trimPoints(walkPts, (drawProgress * 3.0).clamp(0.0, 1.0));
+    final trimmedBus = trimPoints(busPts, ((drawProgress - 0.2) * 1.5).clamp(0.0, 1.0));
+    final trimmedEndWalk = trimPoints(endWalkPts, ((drawProgress - 0.7) * 3.3).clamp(0.0, 1.0));
+
+    final isMetro = route.legs.any((l) => l.mode == 'metro');
+    final transitColor = isMetro ? c.purple : c.blue;
+
+    final polylines = <Polyline>[];
+    if (trimmedWalk.length >= 2) {
+      polylines.add(Polyline(
+        points: trimmedWalk,
+        strokeWidth: 4,
+        color: c.gray.withValues(alpha: opacity),
+        pattern: const StrokePattern.dotted(spacingFactor: 1.5),
+      ));
+    }
+    if (trimmedBus.length >= 2) {
+      polylines.add(Polyline(
+        points: trimmedBus,
+        strokeWidth: 8,
+        color: c.card.withValues(alpha: opacity),
+      ));
+      polylines.add(Polyline(
+        points: trimmedBus,
+        strokeWidth: 5,
+        color: transitColor.withValues(alpha: opacity),
+      ));
+    }
+    if (trimmedEndWalk.length >= 2) {
+      polylines.add(Polyline(
+        points: trimmedEndWalk,
+        strokeWidth: 4,
+        color: c.gray.withValues(alpha: opacity),
+        pattern: const StrokePattern.dotted(spacingFactor: 1.5),
+      ));
+    }
+    return polylines;
   }
 }

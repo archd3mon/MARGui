@@ -22,60 +22,64 @@ class GlassTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.c;
-
-    return ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-        child: Container(
-          decoration: BoxDecoration(
-            color: c.glass,
-            border: Border(
-              top: BorderSide(color: c.separator, width: 0.5),
-            ),
-          ),
-          child: SafeArea(
-            top: false,
-            child: SizedBox(
-              height: 54,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _TabItem(
-                    icon: Icons.map_outlined,
-                    activeIcon: Icons.map_rounded,
-                    label: 'Explore',
-                    isSelected: currentTab == MargTab.explore,
-                    onTap: () {
-                      HapticFeedback.selectionClick();
-                      onTabSelected(MargTab.explore);
-                    },
-                  ),
-                  _TabItem(
-                    icon: Icons.bookmark_border_rounded,
-                    activeIcon: Icons.bookmark_rounded,
-                    label: 'Saved',
-                    isSelected: currentTab == MargTab.saved,
-                    onTap: () {
-                      HapticFeedback.selectionClick();
-                      onTabSelected(MargTab.saved);
-                    },
-                  ),
-                  _TabItem(
-                    icon: Icons.notifications_none_rounded,
-                    activeIcon: Icons.notifications_rounded,
-                    label: 'Alerts',
-                    isSelected: currentTab == MargTab.alerts,
-                    onTap: () {
-                      HapticFeedback.selectionClick();
-                      onTabSelected(MargTab.alerts);
-                    },
-                  ),
-                ],
+    final blurActive = Glass.isBlurActive(context);
+    final bar = Container(
+      decoration: BoxDecoration(
+        color: blurActive ? c.glass : c.card.withValues(alpha: 0.94),
+        border: Border(
+          top: BorderSide(color: c.separator, width: 0.5),
+        ),
+      ),
+      child: SafeArea(
+        top: false,
+        child: SizedBox(
+          height: 54,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _TabItem(
+                icon: Icons.map_outlined,
+                activeIcon: Icons.map_rounded,
+                label: 'Explore',
+                isSelected: currentTab == MargTab.explore,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  onTabSelected(MargTab.explore);
+                },
               ),
-            ),
+              _TabItem(
+                icon: Icons.bookmark_border_rounded,
+                activeIcon: Icons.bookmark_rounded,
+                label: 'Saved',
+                isSelected: currentTab == MargTab.saved,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  onTabSelected(MargTab.saved);
+                },
+              ),
+              _TabItem(
+                icon: Icons.notifications_none_rounded,
+                activeIcon: Icons.notifications_rounded,
+                label: 'Alerts',
+                isSelected: currentTab == MargTab.alerts,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  onTabSelected(MargTab.alerts);
+                },
+              ),
+            ],
           ),
         ),
       ),
+    );
+
+    return ClipRect(
+      child: blurActive
+          ? BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+              child: bar,
+            )
+          : bar,
     );
   }
 }
@@ -101,34 +105,39 @@ class _TabItem extends StatelessWidget {
     final color = isSelected ? c.blue : c.gray;
 
     return Expanded(
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          child: Container(
-            constraints: const BoxConstraints(minHeight: Layout.touch),
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  isSelected ? activeIcon : icon,
-                  color: color,
-                  size: 24,
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  label,
-                  style: MargText.caption.copyWith(
+      child: Semantics(
+        button: true,
+        selected: isSelected,
+        label: '$label tab',
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            child: Container(
+              constraints: const BoxConstraints(minHeight: Layout.touch),
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    isSelected ? activeIcon : icon,
                     color: color,
-                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                    fontSize: 10,
+                    size: 24,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 3),
+                  Text(
+                    label,
+                    style: MargText.caption.copyWith(
+                      color: color,
+                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                      fontSize: 10,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

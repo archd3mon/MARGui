@@ -59,7 +59,9 @@ abstract final class MargText {
 }
 
 extension MargContext on BuildContext {
-  MargColors get c => Theme.of(this).extension<MargColors>()!;
+  MargColors get c =>
+      Theme.of(this).extension<MargColors>() ??
+      (Theme.of(this).brightness == Brightness.dark ? MargColors.dark : MargColors.light);
 }
 
 ThemeData margTheme(Brightness b) {
@@ -84,18 +86,26 @@ class Glass extends StatelessWidget {
   const Glass({super.key, required this.child, this.radius = Rad.sheet, this.blur = true, this.topOnly = false});
   final Widget child; final double radius; final bool blur, topOnly;
 
+  static bool forceDisableBlur = false;
+
+  static bool isBlurActive(BuildContext context, [bool blur = true]) {
+    if (!blur || forceDisableBlur) return false;
+    return MediaQuery.maybeOf(context)?.disableAnimations != true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final c = context.c;
+    final active = isBlurActive(context, blur);
     final br = topOnly ? BorderRadius.vertical(top: Radius.circular(radius)) : BorderRadius.circular(radius);
     final deco = BoxDecoration(
-      color: blur ? c.glass : c.card.withValues(alpha: .94),
+      color: active ? c.glass : c.card.withValues(alpha: .94),
       borderRadius: br,
       border: Border.all(color: c.separator, width: .5),
       boxShadow: const [BoxShadow(color: Color(0x24000000), blurRadius: 40, offset: Offset(0, -10))],
     );
     final inner = DecoratedBox(decoration: deco, child: child);
-    if (!blur) return ClipRRect(borderRadius: br, child: inner);
+    if (!active) return ClipRRect(borderRadius: br, child: inner);
     return ClipRRect(borderRadius: br, child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30), child: inner));
   }
 }

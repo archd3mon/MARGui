@@ -114,28 +114,32 @@ class ItineraryTimelineStep extends StatelessWidget {
                   ],
                   if (step.intermediateStops.isNotEmpty) ...[
                     const SizedBox(height: 6),
-                    InkWell(
-                      onTap: onToggleExpand,
-                      borderRadius: BorderRadius.circular(Rad.sm),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              isExpanded ? 'Hide stops' : 'Show stops',
-                              style: MargText.footnote.copyWith(
-                                color: c.blue,
-                                fontWeight: FontWeight.w600,
+                    Semantics(
+                      button: true,
+                      label: '${isExpanded ? "Hide" : "Show"} ${step.intermediateStops.length} intermediate stops',
+                      child: InkWell(
+                        onTap: onToggleExpand,
+                        borderRadius: BorderRadius.circular(Rad.sm),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                isExpanded ? 'Hide stops' : 'Show stops',
+                                style: MargText.footnote.copyWith(
+                                  color: c.blue,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 2),
-                            Icon(
-                              isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                              size: 16,
-                              color: c.blue,
-                            ),
-                          ],
+                              const SizedBox(width: 2),
+                              Icon(
+                                isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                size: 16,
+                                color: c.blue,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

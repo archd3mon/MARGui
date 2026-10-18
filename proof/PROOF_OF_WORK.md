@@ -110,4 +110,15 @@ Append one block per phase. Evidence = commit, log, screenshot. Keep it factual.
 - Screenshot: proof/phase-7-saved.png (vs design-reference/screens/saved.png), proof/phase-7-alerts.png (vs design-reference/screens/alerts.png)
 - Deviations from design + why: none; Android 48dp touch targets and predictive back preserved.
 
+### Phase 8 — Polish  (2026-10-18)
+- Commit / tag: phase-8
+- Changed:
+  - PLAYBOOK §5 checklist completion: sheet snaps (0.14/0.5/0.92), trim-path polyline draw-in animation, reserved purple metro styling, dotted walking, and async skeletons.
+  - Profiled low-end AVD blur fallback: added `forceDisableBlur` and `isBlurActive` in `MargTokens` with solid 94% card fill across sheets, tab bars, banners, and buttons when blur/motion is disabled.
+  - TalkBack accessibility pass: semantic labels & button traits across Explore, Plan, Results, Itinerary, and Live; font scale resilience verified at 0.85x and 1.3x.
+  - Dark-mode screenshots captured for all 8 screens.
+- Verify: proof/phase-8.log (analyze: clean | tests: 80 passed | 0 hardcoded colors)
+- Screenshots: proof/phase-8-dark-welcome.png, proof/phase-8-dark-home.png, proof/phase-8-dark-saved.png, proof/phase-8-dark-alerts.png, proof/phase-8-dark-plan.png, proof/phase-8-dark-results.png, proof/phase-8-dark-itinerary.png, proof/phase-8-dark-live.png
+- Deviations from design + why: none; blur fallback preserves contrast on lower-end devices without visual artifacting.
+
 

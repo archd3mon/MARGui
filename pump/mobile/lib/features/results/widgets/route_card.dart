@@ -61,13 +61,17 @@ class RouteCard extends StatelessWidget {
             ? [BoxShadow(color: c.tint(c.blue, 0.28), blurRadius: 20, offset: const Offset(0, 8))]
             : [BoxShadow(color: c.label.withValues(alpha: 0.04), blurRadius: 4, offset: const Offset(0, 1))],
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(Rad.lg),
-          child: Padding(
-            padding: const EdgeInsets.all(Sp.x4),
+      child: Semantics(
+        button: true,
+        selected: isSelected,
+        label: 'Route option, ${route.totalTimeMins} minutes, arrives $arrivalTime, ${route.transfers == 0 ? "Direct" : "${route.transfers} transfer"}${route.legs.any((l) => l.line != null) ? ", via lines ${route.legs.where((l) => l.line != null).map((l) => l.line!).join(", ")}" : ""}',
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(Rad.lg),
+            child: Padding(
+              padding: const EdgeInsets.all(Sp.x4),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -120,6 +124,7 @@ class RouteCard extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ),
+  );
   }
 }

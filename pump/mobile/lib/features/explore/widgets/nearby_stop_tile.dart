@@ -28,12 +28,16 @@ class NearbyStopTile extends StatelessWidget {
     final distanceText = _formatDistance(stop.distanceMeters);
     final subtitle = stop.subtext.isNotEmpty ? '$distanceText · ${stop.subtext}' : distanceText;
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(Rad.sm),
-        child: Column(
+    final routesSummary = stop.etas.isNotEmpty ? 'lines ${stop.etas.map((e) => e.route).join(", ")}' : '';
+    return Semantics(
+      button: true,
+      label: '${stop.name}, $subtitle${routesSummary.isNotEmpty ? ", $routesSummary" : ""}',
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(Rad.sm),
+          child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
@@ -116,6 +120,7 @@ class NearbyStopTile extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ),
+  );
   }
 }

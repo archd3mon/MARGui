@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/models/place.dart';
 import '../data/models/route_model.dart';
@@ -5,6 +6,15 @@ import '../data/models/saved_item.dart';
 import '../data/repositories/transit_repository.dart';
 import '../data/storage_service.dart';
 import '../shared/widgets/glass_tab_bar.dart';
+
+// Theme mode provider
+class ThemeModeNotifier extends Notifier<ThemeMode> {
+  @override
+  ThemeMode build() => ThemeMode.system;
+  void setMode(ThemeMode mode) => state = mode;
+}
+
+final themeModeProvider = NotifierProvider<ThemeModeNotifier, ThemeMode>(ThemeModeNotifier.new);
 
 // Storage service provider
 final storageServiceProvider = Provider<StorageService>((ref) {

@@ -65,17 +65,20 @@ class _ShortcutItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.c;
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () {
-          HapticFeedback.lightImpact();
-          onTap();
-        },
-        borderRadius: BorderRadius.circular(26),
-        child: Container(
-          constraints: const BoxConstraints(minWidth: Layout.touch, minHeight: Layout.touch),
-          padding: const EdgeInsets.symmetric(horizontal: Sp.x3, vertical: Sp.x1),
+    return Semantics(
+      button: true,
+      label: '$label shortcut',
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            HapticFeedback.lightImpact();
+            onTap();
+          },
+          borderRadius: BorderRadius.circular(26),
+          child: Container(
+            constraints: const BoxConstraints(minWidth: Layout.touch, minHeight: Layout.touch),
+            padding: const EdgeInsets.symmetric(horizontal: Sp.x3, vertical: Sp.x1),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -100,6 +103,7 @@ class _ShortcutItem extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ),
+  );
   }
 }

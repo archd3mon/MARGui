@@ -26,6 +26,8 @@ class ResultsMap extends StatefulWidget {
 
 class _ResultsMapState extends State<ResultsMap> with TickerProviderStateMixin {
   late final AnimationController _fadeController;
+  late final AnimationController _drawController;
+  late final Animation<double> _drawAnimation;
   AnimationController? _moveController;
   TransitRoute? _previousRoute;
   TransitRoute? _currentRoute;
@@ -35,6 +37,9 @@ class _ResultsMapState extends State<ResultsMap> with TickerProviderStateMixin {
     super.initState();
     _currentRoute = widget.selectedRoute;
     _fadeController = AnimationController(vsync: this, duration: const Duration(milliseconds: 250), value: 1.0);
+    _drawController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    _drawAnimation = CurvedAnimation(parent: _drawController, curve: Curves.easeOutCubic);
+    _drawController.forward();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted && _currentRoute != null) _animateFitRoute(_currentRoute!);
     });
@@ -53,6 +58,7 @@ class _ResultsMapState extends State<ResultsMap> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    _drawController.dispose();
     _fadeController.dispose();
     _moveController?.dispose();
     super.dispose();
@@ -87,13 +93,26 @@ class _ResultsMapState extends State<ResultsMap> with TickerProviderStateMixin {
     const tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 
     return AnimatedBuilder(
-      animation: _fadeController,
+      animation: Listenable.merge([_fadeController, _drawAnimation]),
       builder: (context, _) {
         final currentPolylines = _currentRoute != null
-            ? ResultsMapData.buildPolylines(_currentRoute!, _fadeController.value, c, widget.from, widget.to)
+            ? ResultsMapData.buildPolylines(
+                _currentRoute!,
+                _fadeController.value,
+                c,
+                widget.from,
+                widget.to,
+                drawProgress: _drawAnimation.value,
+              )
             : <Polyline>[];
         final prevPolylines = (_previousRoute != null && _fadeController.value < 1.0)
-            ? ResultsMapData.buildPolylines(_previousRoute!, 1.0 - _fadeController.value, c, widget.from, widget.to)
+            ? ResultsMapData.buildPolylines(
+                _previousRoute!,
+                1.0 - _fadeController.value,
+                c,
+                widget.from,
+                widget.to,
+              )
             : <Polyline>[];
 
         return FlutterMap(

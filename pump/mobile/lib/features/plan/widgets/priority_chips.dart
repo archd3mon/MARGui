@@ -64,47 +64,52 @@ class _PriorityFilterChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.c;
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: Motion.fast,
-        padding: const EdgeInsets.symmetric(horizontal: Sp.x3 + 2, vertical: Sp.x2),
-        decoration: BoxDecoration(
-          color: isSelected ? c.blue : c.card,
-          borderRadius: BorderRadius.circular(Rad.lg),
-          border: Border.all(
-            color: isSelected ? c.blue : c.separator,
-            width: 0.5,
-          ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: c.tint(c.blue, 0.35),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ]
-              : null,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) ...[
-              Icon(
-                icon,
-                size: 16,
-                color: isSelected ? c.card : c.label2,
-              ),
-              const SizedBox(width: Sp.x1),
-            ],
-            Text(
-              title,
-              style: MargText.subhead.copyWith(
-                color: isSelected ? c.card : c.label,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-              ),
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: '$title priority',
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: Motion.fast,
+          padding: const EdgeInsets.symmetric(horizontal: Sp.x3 + 2, vertical: Sp.x2),
+          decoration: BoxDecoration(
+            color: isSelected ? c.blue : c.card,
+            borderRadius: BorderRadius.circular(Rad.lg),
+            border: Border.all(
+              color: isSelected ? c.blue : c.separator,
+              width: 0.5,
             ),
-          ],
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: c.tint(c.blue, 0.35),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                : null,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (icon != null) ...[
+                Icon(
+                  icon,
+                  size: 16,
+                  color: isSelected ? c.card : c.label2,
+                ),
+                const SizedBox(width: Sp.x1),
+              ],
+              Text(
+                title,
+                style: MargText.subhead.copyWith(
+                  color: isSelected ? c.card : c.label,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

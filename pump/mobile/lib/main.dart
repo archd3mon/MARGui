@@ -27,13 +27,14 @@ class MargApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = createRouter(storage);
+    final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp.router(
       title: 'Marg',
       debugShowCheckedModeBanner: false,
       theme: margTheme(Brightness.light),
       darkTheme: margTheme(Brightness.dark),
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
       routerConfig: router,
     );
   }

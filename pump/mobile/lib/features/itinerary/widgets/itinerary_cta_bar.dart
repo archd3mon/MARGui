@@ -34,20 +34,24 @@ class ItineraryCtaBar extends StatelessWidget {
         const SizedBox(width: Sp.x3),
 
         // 2. Save Route Bookmark Button
-        Material(
-          color: c.tint(c.blue, 0.12),
-          borderRadius: BorderRadius.circular(Rad.md),
-          child: InkWell(
-            onTap: onToggleSave,
+        Semantics(
+          button: true,
+          label: isSaved ? 'Route saved' : 'Save route',
+          child: Material(
+            color: c.tint(c.blue, 0.12),
             borderRadius: BorderRadius.circular(Rad.md),
-            child: SizedBox(
-              width: 52,
-              height: Layout.touch + 4,
-              child: Center(
-                child: Icon(
-                  isSaved ? Icons.bookmark : Icons.bookmark_border,
-                  color: c.blue,
-                  size: 22,
+            child: InkWell(
+              onTap: onToggleSave,
+              borderRadius: BorderRadius.circular(Rad.md),
+              child: SizedBox(
+                width: 52,
+                height: Layout.touch + 4,
+                child: Center(
+                  child: Icon(
+                    isSaved ? Icons.bookmark : Icons.bookmark_border,
+                    color: c.blue,
+                    size: 22,
+                  ),
                 ),
               ),
             ),

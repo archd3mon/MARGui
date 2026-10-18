@@ -16,52 +16,56 @@ class MapActionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.c;
+    final blurActive = Glass.isBlurActive(context);
+    final buttonBox = Container(
+      decoration: BoxDecoration(
+        color: blurActive ? c.glass : c.card.withValues(alpha: 0.94),
+        borderRadius: BorderRadius.circular(Rad.md),
+        border: Border.all(color: c.separator, width: 0.5),
+        boxShadow: [
+          BoxShadow(
+            color: c.label.withValues(alpha: 0.14),
+            blurRadius: 12,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _ActionButton(
+            icon: Icons.near_me_rounded,
+            tooltip: 'My Location',
+            onPressed: () {
+              HapticFeedback.selectionClick();
+              onLocateMe();
+            },
+          ),
+          Container(
+            width: 44,
+            height: 0.5,
+            color: c.separator,
+          ),
+          _ActionButton(
+            icon: Icons.layers_outlined,
+            tooltip: 'Map Layers',
+            onPressed: () {
+              HapticFeedback.selectionClick();
+              onToggleLayers();
+            },
+          ),
+        ],
+      ),
+    );
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(Rad.md),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-        child: Container(
-          decoration: BoxDecoration(
-            color: c.glass,
-            borderRadius: BorderRadius.circular(Rad.md),
-            border: Border.all(color: c.separator, width: 0.5),
-            boxShadow: [
-              BoxShadow(
-                color: c.label.withValues(alpha: 0.14),
-                blurRadius: 12,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _ActionButton(
-                icon: Icons.near_me_rounded,
-                tooltip: 'My Location',
-                onPressed: () {
-                  HapticFeedback.selectionClick();
-                  onLocateMe();
-                },
-              ),
-              Container(
-                width: 44,
-                height: 0.5,
-                color: c.separator,
-              ),
-              _ActionButton(
-                icon: Icons.layers_outlined,
-                tooltip: 'Map Layers',
-                onPressed: () {
-                  HapticFeedback.selectionClick();
-                  onToggleLayers();
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+      child: blurActive
+          ? BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+              child: buttonBox,
+            )
+          : buttonBox,
     );
   }
 }
@@ -81,22 +85,26 @@ class _ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.c;
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onPressed,
-        child: Container(
-          width: 44,
-          height: 44,
-          alignment: Alignment.center,
-          constraints: const BoxConstraints(
-            minWidth: Layout.touch,
-            minHeight: Layout.touch,
-          ),
-          child: Icon(
-            icon,
-            color: c.blue,
-            size: 20,
+    return Semantics(
+      button: true,
+      label: tooltip,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPressed,
+          child: Container(
+            width: 44,
+            height: 44,
+            alignment: Alignment.center,
+            constraints: const BoxConstraints(
+              minWidth: Layout.touch,
+              minHeight: Layout.touch,
+            ),
+            child: Icon(
+              icon,
+              color: c.blue,
+              size: 20,
+            ),
           ),
         ),
       ),

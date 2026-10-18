@@ -158,31 +158,35 @@ class LeaveTimeRow extends StatelessWidget {
         borderRadius: BorderRadius.circular(Rad.md),
         border: Border.all(color: c.separator, width: 0.5),
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => _showTimePickerSheet(context),
-          borderRadius: BorderRadius.circular(Rad.md),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Sp.x3, vertical: Sp.x3),
-            child: Row(
-              children: [
-                const TileIcon(
-                  icon: Icons.access_time_rounded,
-                  color: TileColor.blue,
-                  size: 32,
-                  iconSize: 16,
-                ),
-                const SizedBox(width: Sp.x3),
-                Text('Leave', style: MargText.body.copyWith(color: c.label)),
-                const Spacer(),
-                Text(
-                  departureTime,
-                  style: MargText.body.copyWith(color: c.label2),
-                ),
-                const SizedBox(width: Sp.x1),
-                Icon(Icons.chevron_right, color: c.label3, size: 20),
-              ],
+      child: Semantics(
+        button: true,
+        label: 'Departure time: $departureTime',
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () => _showTimePickerSheet(context),
+            borderRadius: BorderRadius.circular(Rad.md),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Sp.x3, vertical: Sp.x3),
+              child: Row(
+                children: [
+                  const TileIcon(
+                    icon: Icons.access_time_rounded,
+                    color: TileColor.blue,
+                    size: 32,
+                    iconSize: 16,
+                  ),
+                  const SizedBox(width: Sp.x3),
+                  Text('Leave', style: MargText.body.copyWith(color: c.label)),
+                  const Spacer(),
+                  Text(
+                    departureTime,
+                    style: MargText.body.copyWith(color: c.label2),
+                  ),
+                  const SizedBox(width: Sp.x1),
+                  Icon(Icons.chevron_right, color: c.label3, size: 20),
+                ],
+              ),
             ),
           ),
         ),
