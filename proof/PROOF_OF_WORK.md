@@ -121,4 +121,15 @@ Append one block per phase. Evidence = commit, log, screenshot. Keep it factual.
 - Screenshots: proof/phase-8-dark-welcome.png, proof/phase-8-dark-home.png, proof/phase-8-dark-saved.png, proof/phase-8-dark-alerts.png, proof/phase-8-dark-plan.png, proof/phase-8-dark-results.png, proof/phase-8-dark-itinerary.png, proof/phase-8-dark-live.png
 - Deviations from design + why: none; blur fallback preserves contrast on lower-end devices without visual artifacting.
 
+### Phase 9 — Release  (2026-10-18)
+- Commit / tag: phase-9
+- Changed:
+  - Designed vector adaptive icon (`ic_launcher_background`, `ic_launcher_foreground`, `ic_launcher_monochrome`) with Marg blue gradient & route glyph, plus legacy raster mipmaps and 512px Play Store icon.
+  - Configured Android 12+ SplashScreen API (`windowSplashScreenBackground`, `windowSplashScreenAnimatedIcon`) and pre-12 launch background for both light and dark themes.
+  - Configured release signing in `build.gradle.kts` via `key.properties` with fallback, compiled release Android App Bundle (`app-release.aab`), verified signed release APK on device/AVD, and authored complete `docs/RELEASE.md` Play Console guide.
+- Verify: proof/phase-9.log (analyze: clean | tests: 81 passed | 0 hardcoded colors)
+- Screenshot: proof/phase-9-release.png (vs design-reference/screens/welcome.png)
+- Deviations from design + why: none; release bundle and APK validated.
+
+
 
