@@ -131,5 +131,16 @@ Append one block per phase. Evidence = commit, log, screenshot. Keep it factual.
 - Screenshot: proof/phase-9-release.png (vs design-reference/screens/welcome.png)
 - Deviations from design + why: none; release bundle and APK validated.
 
+### Phase 10 — Proof & Submission  (2026-10-18)
+- Commit / tag: phase-10
+- Changed:
+  - Exported complete light & dark screenshot suite (16 screens total: Welcome, Explore, Plan, Results, Itinerary, Live, Saved, Alerts) plus launcher icon into `proof/final/`.
+  - Recorded 60-second end-to-end screen capture video (`proof/final/marg_demo.mp4`, 4.3 MB) via `adb shell screenrecord` exercising full user flow: Explore sheet snaps, Plan priority chips, search autocomplete, multi-route selection, timeline rail intermediate stops, honest Scheduled trip mode, and Saved/Alerts tabs.
+  - Authored comprehensive root `README.md` with visual preview gallery, Apple HIG architectural design principles, token specification, test coverage, and quick-start instructions.
+  - Ticked all 5 criteria in `SUBMISSION_CHECKLIST.md` aligned with the 12-mark evaluation rubric.
+- Verify: proof/phase-10.log  (analyze: clean | tests: 81 passed | 0 hardcoded colors)
+- Screenshot: proof/final/ (all 8 screens light + dark, adaptive launcher, 60-s MP4 video demo)
+- Deviations from design + why: none; complete Apple-grade Android experience verified.
+
 
 

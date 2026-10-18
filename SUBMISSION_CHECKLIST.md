@@ -4,11 +4,11 @@ Deliverables: **PPT · Figma · HTML & CSS** (all three) for topic *Marg — Pun
 
 | Marks | Criterion | Evidence to show | Done |
 |---|---|---|---|
-| 2 | Persona relevance (1) + user needs (1) | Persona slide (Riya, 21, Kothrud → Viman Nagar commuter); needs→feature table | ☐ |
-| 2 | Layout structure (1) + logical grouping (1) | Wireframes slide + 8-pt grid callout; Home/Plan/Results grouping | ☐ |
-| 2 | Colour (.5) + alignment (.5) + visual balance (1) | Palette slide with roles; Auto Layout screenshots; before/after of spacing | ☐ |
-| 1 | Key screens (.5) + components (1→ shown) + timely (.5) | 8 screens, component sheet (BusChip, Badge, Card, Sheet, Tab bar), submit early | ☐ |
-| 3 | Neatness (1) + annotations (1) + completeness (1) | Numbered callouts on every screen, consistent deck, Q&A prep below | ☐ |
+| 2 | Persona relevance (1) + user needs (1) | Persona slide (Riya, 21, Kothrud → Viman Nagar commuter); needs→feature table; instant commute re-run in Saved | ☑ |
+| 2 | Layout structure (1) + logical grouping (1) | Wireframes slide + 8-pt grid callout; Explore/Plan/Results grouping; 3-snap glass draggable sheet (0.14/0.5/0.92) | ☑ |
+| 2 | Colour (.5) + alignment (.5) + visual balance (1) | Palette slide with roles; token-driven MargColors; 48dp touch targets; 8-pt rhythm; WCAG AAA contrast | ☑ |
+| 1 | Key screens (.5) + components (1→ shown) + timely (.5) | 8 screens light + dark in `proof/final/`; shared components (BusChip, Badge, Card, Sheet, TabBar); early submission | ☑ |
+| 3 | Neatness (1) + annotations (1) + completeness (1) | Numbered callouts on every screen; full 60-s walkthrough video `proof/final/marg_demo.mp4`; zero analyze/lint errors | ☑ |
 
 ## Deck order (12 slides)
 1 Title · 2 Problem/objective · 3 Persona · 4 Needs→features · 5 User flow · 6 Low-fi wireframes · 7 Palette+type · 8 Components · 9–11 Annotated screens · 12 HTML/CSS shots, Figma link, future scope (Metro)
